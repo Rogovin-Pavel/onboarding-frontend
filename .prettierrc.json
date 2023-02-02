@@ -1,0 +1,12 @@
+{
+  "trailingComma": "none",
+  "bracketSpacing": true,
+  "tabWidth": 2,
+  "semicolons": false,
+  "semi": false,
+  "singleQuote": true,
+  "bracketSameLine": false,
+  "arrowParens": "always",
+  "endOfLine": "lf",
+  "singleAttributePerLine": true
+}
