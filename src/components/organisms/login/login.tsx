@@ -1,74 +1,40 @@
-import React, { useEffect } from 'react'
-import { ChangeEvent, FormEvent, MouseEvent, useState } from 'react'
-import { RootState } from '../../../store'
-import { signin, signout } from '../../../store/authReducer'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { useMutation, useQuery, gql, useLazyQuery } from '@apollo/client'
-import { SIGN_IN } from '../../../graphql/mutations'
-import { GET_USERS } from '../../../graphql/queries'
+import { FormEvent, MouseEvent, useState } from 'react'
+
+import { RootState, useAuthDispatch } from '@src/store'
+import { signin, signout } from '@src/store/slices/auth'
+
 import Input from '@src/components/molecules/input/input'
 
 export default function Login() {
   const user = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch()
+  const authDispatch = useAuthDispatch()
   const [email, setEmail] = useState('')
-  const [token, setToken] = useState('')
   const [password, setPassword] = useState('')
 
-  const [login] = useMutation(SIGN_IN)
-
-  const [loadUsers, { called, loading, data }] = useLazyQuery(GET_USERS)
-
-  const emailHandler = (value: string): void => {
-    setEmail(value)
-  }
-
-  const passHandler = (value: string): void => {
-    setPassword(value)
-  }
-
-  const signinHandler = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
-    try {
-      const { data } = await login({
-        variables: {
-          user: {
-            email,
-            password
-          }
-        }
-      })
-
-      const { accessToken } = data.login
-
-      localStorage.setItem('token', accessToken)
-      setToken(accessToken)
-      loadUsers()
-
-      dispatch(signin({ email, password, accessToken }))
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const logoutHandler = (event: MouseEvent<HTMLButtonElement>) => {
+  const onSignout = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
 
     setEmail('')
-    setToken('')
-    localStorage.removeItem('token')
     setPassword('')
     dispatch(signout())
   }
 
-  useEffect(() => {
-    console.log(data)
-  }, [data])
+  const onSignin = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    authDispatch(
+      signin({
+        email,
+        password
+      })
+    )
+  }
 
   return (
     <form
-      onSubmit={signinHandler}
+      onSubmit={onSignin}
       className="
         flex flex-col items-center
         gap-[16px]
@@ -84,14 +50,14 @@ export default function Login() {
         type="email"
         label="Email"
         placeholder="Type email"
-        whenChange={emailHandler}
+        whenChange={setEmail}
       />
       <Input
         value={password}
         type="password"
         label="Password"
         placeholder="Type password"
-        whenChange={passHandler}
+        whenChange={setPassword}
       />
       <footer className="flex w-full justify-end gap-[20px]">
         <button
@@ -104,7 +70,7 @@ export default function Login() {
         <button
           disabled={!user.email}
           className="rounded-md bg-blue-400 text-white disabled:bg-gray-400 px-3 py-2 hover:bg-blue-500"
-          onClick={logoutHandler}
+          onClick={onSignout}
         >
           Sign out
         </button>

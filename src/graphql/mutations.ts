@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client'
 
 export const SIGN_IN = gql`
   mutation login($user: CreateUserDto!) {
@@ -6,10 +6,11 @@ export const SIGN_IN = gql`
       accessToken
       user {
         name
+        email
       }
     }
   }
-`;
+`
 
 export const SIGN_UP = gql`
   mutation signup($user: CreateUserDto!) {
@@ -18,4 +19,4 @@ export const SIGN_UP = gql`
       email
     }
   }
-`;
+`
