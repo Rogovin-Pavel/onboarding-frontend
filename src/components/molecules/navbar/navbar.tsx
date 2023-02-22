@@ -10,12 +10,12 @@ export const Navbar = () => {
       <div className="hidden sm:ml-6 sm:block">
         <div className="flex space-x-4">
           <LinkButton
-            text="Sign in"
-            href="/signin"
+            text="Home"
+            href="/"
           />
           <LinkButton
-            text="Sign up"
-            href="/signup"
+            text="Sign in"
+            href="/signin"
           />
         </div>
       </div>
