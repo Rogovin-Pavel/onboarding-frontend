@@ -7,6 +7,7 @@ import {
   from
 } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
+import fetch from 'cross-fetch'
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -18,7 +19,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const link = from([
   errorLink,
-  new HttpLink({ uri: 'http://localhost:3001/graphql' })
+  new HttpLink({ uri: 'http://localhost:3001/graphql', fetch })
 ])
 
 const authMiddleware = new ApolloLink((operation, forward) => {

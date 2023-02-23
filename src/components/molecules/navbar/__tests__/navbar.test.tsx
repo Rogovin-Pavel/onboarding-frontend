@@ -1,19 +1,10 @@
-import { render, screen } from '@testing-library/react'
-import { Router } from 'react-router-dom'
+import { screen } from '@testing-library/react'
 import { Navbar } from '../navbar'
-import { createMemoryHistory } from 'history'
+
+import { render } from '@src/test-utils'
 
 test('Navbar is rendered', async () => {
-  const history = createMemoryHistory()
-
-  render(
-    <Router
-      location={history.location}
-      navigator={history}
-    >
-      <Navbar />
-    </Router>
-  )
+  render(<Navbar />)
 
   const Component = await screen.findByRole('navigation')
 
