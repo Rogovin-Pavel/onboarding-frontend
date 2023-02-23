@@ -1,26 +1,17 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { FormEvent, MouseEvent, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { FormEvent, useState } from 'react'
 
 import { RootState, useAuthDispatch } from '@src/store'
-import { signin, signout } from '@src/store/slices/auth'
+import { signin } from '@src/store/slices/auth'
 
 import Input from '@src/components/molecules/input/input'
 
 export default function Login() {
   const user = useSelector((state: RootState) => state.auth)
-  const dispatch = useDispatch()
   const authDispatch = useAuthDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-
-  const onSignout = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-
-    setEmail('')
-    setPassword('')
-    dispatch(signout())
-  }
 
   const onSignin = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -65,14 +56,7 @@ export default function Login() {
           type="submit"
           disabled={!!user.email}
         >
-          Sign in
-        </button>
-        <button
-          disabled={!user.email}
-          className="rounded-md bg-blue-400 text-white disabled:bg-gray-400 px-3 py-2 hover:bg-blue-500"
-          onClick={onSignout}
-        >
-          Sign out
+          Continue
         </button>
       </footer>
     </form>

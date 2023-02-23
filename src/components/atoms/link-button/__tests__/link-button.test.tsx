@@ -1,21 +1,15 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
+import { Tabs } from '@src/components/molecules/navbar/navbar'
+import { render } from '@src/test-utils'
 import { LinkButton } from '../link-button'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
 
 test('LinkButton is rendered', async () => {
-  const history = createMemoryHistory()
-
   render(
-    <Router
-      location={history.location}
-      navigator={history}
-    >
-      <LinkButton
-        text="hi"
-        href="/"
-      />
-    </Router>
+    <LinkButton
+      text={Tabs.home}
+      href={Tabs.home}
+      onClick={() => {}}
+    />
   )
 
   const Button = await screen.findByRole('link-button')
