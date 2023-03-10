@@ -1,19 +1,27 @@
-import React from 'react'
+import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { FormEvent, useState } from 'react'
 
-import { RootState, useAuthDispatch } from '@src/store'
 import { signin } from '@src/store/slices/auth'
+import { RootState, useAuthDispatch } from '@src/store'
 
 import Input from '@src/components/molecules/input/input'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
   const user = useSelector((state: RootState) => state.auth)
+  const navigate = useNavigate()
   const authDispatch = useAuthDispatch()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const onSignin = (event: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    if (user.accessToken && !user.isLoading) {
+      navigate('/')
+    }
+  }, [user])
+
+  const onSignin = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     authDispatch(
       signin({
@@ -56,7 +64,7 @@ export default function Login() {
           type="submit"
           disabled={!!user.email}
         >
-          Continue
+          {user.isLoading ? 'Loading...' : 'Continue'}
         </button>
       </footer>
     </form>
